@@ -1,0 +1,52 @@
+# ── Python ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ── Virtual envs ────────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Secrets / local config ──────────────────────────────────────────────
+.env
+.env.local
+.env.bak
+*.secret
+
+# ── User-generated data ─────────────────────────────────────────────────
+# Sensor data folders — each user generates their own
+data/
+data/**
+
+# Offline-map artifacts — auto-downloaded on first online launch
+assets/tiles/
+assets/map_background.png
+assets/map_bounds.json
+assets/tiles_manifest.json
+
+# Per-user AI provider preference (lives in ~/.soilsense/ — but in case
+# someone symlinks it into the repo)
+ai_settings.json
+
+# ── IDE / OS ────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Build artifacts ─────────────────────────────────────────────────────
+*.spec
+build-tmp/
+
+# ── Internal tools ──────────────────────────────────────────────────────
+.claude/

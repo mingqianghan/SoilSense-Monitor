@@ -1,0 +1,29 @@
+# SoilSense Monitor — Python dependencies
+# Install with:  pip install -r requirements.txt
+
+# ── UI framework ────────────────────────────────────────────────────────
+PyQt6>=6.5
+PyQt6-WebEngine>=6.5      # online Leaflet map view
+
+# ── Hardware comms ──────────────────────────────────────────────────────
+pyserial>=3.5             # UART communication with the radio MCU
+
+# ── Data / numerics ─────────────────────────────────────────────────────
+numpy>=1.24
+pandas>=2.0
+matplotlib>=3.7           # frequency-response plot + offline matplotlib map
+Pillow>=10.0              # offline tile stitching
+
+# ── Weather ─────────────────────────────────────────────────────────────
+requests>=2.31            # used by Weather_Summary for OpenWeather API
+meteostat>=1.6            # historical-weather export
+
+# ── AI assistant ────────────────────────────────────────────────────────
+anthropic>=0.39           # Claude
+openai>=1.40              # GPT  AND Google Gemini (via OpenAI-compatible endpoint)
+
+# ── Credential storage ──────────────────────────────────────────────────
+keyring>=24.0             # per-user API key storage via OS credential store
+
+# ── Environment / config ────────────────────────────────────────────────
+python-dotenv>=1.0        # .env file loading (dev convenience)

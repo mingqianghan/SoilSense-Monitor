@@ -1,0 +1,70 @@
+{
+    "data_root": "data\\2026",
+    "save_root": "data\\2026",
+
+    "field": {
+        "name": "KSU Research Field",
+        "location": "Manhattan, KS",
+        "crop": "Maize",
+        "variety": "P13050",
+        "season": "2026"
+    },
+
+    "markers": [
+        {"name": "S1",  "latitude": 39.21178078, "longitude": -96.5949404},
+        {"name": "S2",  "latitude": 39.21171918, "longitude": -96.59494122},
+        {"name": "S3",  "latitude": 39.21167075, "longitude": -96.59494452},
+        {"name": "S4",  "latitude": 39.21167088, "longitude": -96.59506776},
+        {"name": "S5",  "latitude": 39.21171887, "longitude": -96.59506327},
+        {"name": "S6",  "latitude": 39.2117812,  "longitude": -96.59505894},
+        {"name": "S7",  "latitude": 39.2115865,  "longitude": -96.59504616},
+        {"name": "S8",  "latitude": 39.21153207, "longitude": -96.59504594},
+        {"name": "S9",  "latitude": 39.21153273, "longitude": -96.59516051},
+        {"name": "S10", "latitude": 39.2115871,  "longitude": -96.59516427},
+        {"name": "S11", "latitude": 39.21153277, "longitude": -96.59527602},
+        {"name": "S12", "latitude": 39.21158609, "longitude": -96.59527375},
+        {"name": "S13", "latitude": 39.2113954,  "longitude": -96.59505847},
+        {"name": "S14", "latitude": 39.21145014, "longitude": -96.59505732},
+        {"name": "S15", "latitude": 39.211395,   "longitude": -96.59515798},
+        {"name": "S16", "latitude": 39.21145039, "longitude": -96.59516059},
+        {"name": "S17", "latitude": 39.21139433, "longitude": -96.59527675},
+        {"name": "S18", "latitude": 39.21144971, "longitude": -96.5952767},
+        {"name": "S30", "latitude": 0.0, "longitude": 0.0, "test": true}
+    ],
+
+    "plots": [
+        {
+            "name": "PD1",
+            "planting_date": "2026-04-21",
+            "nodes": ["S1", "S2", "S3", "S4", "S5", "S6"],
+            "corners": [
+                {"name": "C1", "latitude": 39.21181611, "longitude": -96.59531365},
+                {"name": "C2", "latitude": 39.21181303, "longitude": -96.59469243},
+                {"name": "C3", "latitude": 39.21164791, "longitude": -96.59469549},
+                {"name": "C4", "latitude": 39.21165063, "longitude": -96.59531084}
+            ]
+        },
+        {
+            "name": "PD2",
+            "planting_date": "2026-05-18",
+            "nodes": ["S7", "S8", "S9", "S10", "S11", "S12"],
+            "corners": [
+                {"name": "C1", "latitude": 39.21162419, "longitude": -96.59562886},
+                {"name": "C2", "latitude": 39.21162181, "longitude": -96.59469679},
+                {"name": "C3", "latitude": 39.2115124,  "longitude": -96.59469898},
+                {"name": "C4", "latitude": 39.21151384, "longitude": -96.59563262}
+            ]
+        },
+        {
+            "name": "PD3",
+            "planting_date": "2026-06-15",
+            "nodes": ["S13", "S14", "S15", "S16", "S17", "S18"],
+            "corners": [
+                {"name": "C1", "latitude": 39.2114874,  "longitude": -96.59563295},
+                {"name": "C2", "latitude": 39.21148443, "longitude": -96.59469901},
+                {"name": "C3", "latitude": 39.21137323, "longitude": -96.59469843},
+                {"name": "C4", "latitude": 39.21137563, "longitude": -96.59563646}
+            ]
+        }
+    ]
+}
