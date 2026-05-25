@@ -10,6 +10,12 @@ The app pairs an interactive **Map View** (with weather panel and AI
 agronomic summaries) with a **Collect Page** (serial port setup,
 collection workflow, frequency-response plot, and serial log).
 
+> **Version note.** This is an improved, restructured version of the
+> original software. The earlier version remains available for reference at
+> [mingqianghan/SoilSensorFirmwareAndInterface](https://github.com/mingqianghan/SoilSensorFirmwareAndInterface).
+> The two repositories share the same hardware/firmware foundation;
+> this one adds a redesigned PyQt6 UI, AI-assisted agronomic summaries, and real-time soil models.
+
 ## Features
 
 - **Per-node soil-property estimation** — VWC, bulk EC, pore EC, USDA
@@ -65,10 +71,10 @@ sensor nodes:
 
 The app uses two external APIs. Each end-user supplies their own key:
 
-| Service | Free tier | Used for | Sign-up |
-|---|---|---|---|
-| **OpenWeather** (One Call 3.0) | ~1,000 calls/day | Weather panel + AI summary | [openweathermap.org/api/one-call-3](https://openweathermap.org/api/one-call-3) |
-| **Anthropic Claude** *or* **OpenAI GPT** *or* **Google Gemini** | varies — Gemini Flash is free | AI Crop Summary | see provider docs |
+| Service                                                         | Free tier                     | Used for                   | Sign-up                                                                        |
+| --------------------------------------------------------------- | ----------------------------- | -------------------------- | ------------------------------------------------------------------------------ |
+| **OpenWeather** (One Call 3.0)                                  | ~1,000 calls/day              | Weather panel + AI summary | [openweathermap.org/api/one-call-3](https://openweathermap.org/api/one-call-3) |
+| **Anthropic Claude** _or_ **OpenAI GPT** _or_ **Google Gemini** | varies — Gemini Flash is free | AI Crop Summary            | see provider docs                                                              |
 
 > First-time OpenWeather users must subscribe to the
 > **"All-in-one Weather API"** plan (One Call 3.0) before generating a key.
@@ -137,16 +143,3 @@ p = pathlib.Path.home() / '.soilsense' / 'ai_settings.json'
 p.unlink(missing_ok=True)
 "
 ```
-
-## License & intellectual property
-
-This repository is made public for transparency and reproducibility of
-research results. **All rights reserved.** No license to copy, modify,
-redistribute, or commercially exploit the software, the underlying soil
-model, or the hardware design is granted by publication of this code.
-
-Portions of the hardware design and possibly the calibration model are
-the subject of pending patent applications. For licensing inquiries,
-academic collaboration, or commercial use, please contact the author.
-
-— Mingqiang Han, Kansas State University
