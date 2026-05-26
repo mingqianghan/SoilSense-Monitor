@@ -1,5 +1,6 @@
 from __future__ import annotations
 import os
+import sys
 import datetime
 from PyQt6.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QSplitter, QScrollArea,
@@ -297,8 +298,11 @@ class CommCollectPage(QWidget):
             pred = predict_full(filepath)
         except Exception as e:
             # Print AND log to a file next to the exe so errors are visible
-            # in bundled mode where stdout is suppressed.
-            import sys, traceback, datetime
+            # in bundled mode where stdout is suppressed. NOTE: do NOT do
+            # `import datetime` here — it would shadow the module-level
+            # `datetime` for the entire function (Python scoping rule),
+            # breaking the success path's datetime.date.fromtimestamp call.
+            import traceback
             msg = (
                 f"[{datetime.datetime.now().isoformat(timespec='seconds')}] "
                 f"soil model failed for {filepath}\n"

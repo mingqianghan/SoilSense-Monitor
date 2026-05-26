@@ -11,6 +11,53 @@ if getattr(sys, "frozen", False):
 # Ensure the project root is on the path when launched directly
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+
+# ── Crash logging ──────────────────────────────────────────────────────
+# Release builds run with console=False, so stderr is swallowed. Without
+# this, any uncaught exception (main thread, worker thread, or native
+# segfault) kills the app silently. Route everything to a log file next
+# to the exe so users can send it back when something breaks.
+def _install_crash_logger():
+    import traceback, datetime, threading, faulthandler
+
+    log_dir = (os.path.dirname(sys.executable)
+               if getattr(sys, "frozen", False)
+               else os.getcwd())
+    log_path = os.path.join(log_dir, "soilsense_crash.log")
+
+    def _write(prefix, exc_type, exc_value, exc_tb):
+        try:
+            with open(log_path, "a", encoding="utf-8") as f:
+                f.write(
+                    f"[{datetime.datetime.now().isoformat(timespec='seconds')}] "
+                    f"{prefix}\n"
+                    f"  {exc_type.__name__}: {exc_value}\n"
+                    + "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
+                    + "\n"
+                )
+        except Exception:
+            pass
+
+    def _excepthook(exc_type, exc_value, exc_tb):
+        _write("Uncaught exception (main thread)", exc_type, exc_value, exc_tb)
+        sys.__excepthook__(exc_type, exc_value, exc_tb)
+
+    def _thread_hook(args):
+        _write(f"Uncaught exception (thread: {args.thread.name})",
+               args.exc_type, args.exc_value, args.exc_traceback)
+
+    sys.excepthook = _excepthook
+    threading.excepthook = _thread_hook
+
+    # Catch native (C-level) crashes — Qt/numpy/pandas segfaults that
+    # never reach Python's exception machinery.
+    try:
+        faulthandler.enable(open(log_path, "a", encoding="utf-8"))
+    except Exception:
+        pass
+
+_install_crash_logger()
+
 # PyQt6 needs its bundled Qt6 DLLs in the DLL search path.
 # In Anaconda environments the standard Library\bin dir is not in PATH,
 # and the PyQt6 package dir may also need to be registered explicitly.
