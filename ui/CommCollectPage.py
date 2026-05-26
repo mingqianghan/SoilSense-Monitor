@@ -296,7 +296,25 @@ class CommCollectPage(QWidget):
             from soil.node_loader import predict_full
             pred = predict_full(filepath)
         except Exception as e:
-            print(f"[soil model] {filepath}: {e}")
+            # Print AND log to a file next to the exe so errors are visible
+            # in bundled mode where stdout is suppressed.
+            import sys, traceback, datetime
+            msg = (
+                f"[{datetime.datetime.now().isoformat(timespec='seconds')}] "
+                f"soil model failed for {filepath}\n"
+                f"  error: {type(e).__name__}: {e}\n"
+                f"  traceback:\n{traceback.format_exc()}\n"
+            )
+            print(msg)
+            try:
+                log_dir = (os.path.dirname(sys.executable)
+                           if getattr(sys, "frozen", False)
+                           else os.getcwd())
+                with open(os.path.join(log_dir, "soilsense_errors.log"),
+                          "a", encoding="utf-8") as f:
+                    f.write(msg + "\n")
+            except Exception:
+                pass
             return
 
         # Node id from the parent folder name (authoritative source).

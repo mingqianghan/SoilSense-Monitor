@@ -45,8 +45,11 @@ ai_settings.json
 Thumbs.db
 
 # ── Build artifacts ─────────────────────────────────────────────────────
-*.spec
+build/
+dist/
 build-tmp/
+*.exe
+# NOTE: SoilSense.spec is intentionally tracked (it's the build recipe).
 
 # ── Internal tools ──────────────────────────────────────────────────────
 .claude/

@@ -31,6 +31,7 @@ Error handling
 """
 from __future__ import annotations
 import os
+import sys
 import pickle
 import datetime
 import tempfile
@@ -43,9 +44,17 @@ import pandas as pd
 from soil.model import predict_full as _predict_full_real
 
 
-# Path to saved calibration result. Anchored relative to this file so it
-# resolves correctly regardless of the process CWD.
-PKL_PATH = str(Path(__file__).resolve().parent.parent / "result.pkl")
+# Path to saved calibration result.
+#   • Source mode: result.pkl lives at the project root, 2 levels up
+#     from soil/node_loader.py.
+#   • PyInstaller-frozen mode: __file__ may point inside the bundle
+#     archive (not a real filesystem path), so we resolve relative to
+#     sys.executable instead. The .spec file places result.pkl next to
+#     the .exe (datas = [("result.pkl", ".")] + contents_directory=".").
+if getattr(sys, "frozen", False):
+    PKL_PATH = os.path.join(os.path.dirname(sys.executable), "result.pkl")
+else:
+    PKL_PATH = str(Path(__file__).resolve().parent.parent / "result.pkl")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

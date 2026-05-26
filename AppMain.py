@@ -1,6 +1,13 @@
 import sys
 import os
 
+# When running as a frozen PyInstaller bundle, the launching context's CWD
+# can be anything (a Start-menu shortcut, a different drive, etc.). Anchor
+# CWD to the exe's folder so the relative paths used to load config.json,
+# result.pkl, and assets/ resolve correctly.
+if getattr(sys, "frozen", False):
+    os.chdir(os.path.dirname(sys.executable))
+
 # Ensure the project root is on the path when launched directly
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
