@@ -300,11 +300,11 @@ def _iter_node_folders(root: Path) -> List[Path]:
 def load_node_data(data_root: str) -> List[Dict]:
     """
     Discover every subfolder of data_root whose name contains digits; treat
-    each as one sensor (node-id = 'N' + zero-padded digits from the folder
-    name). For each folder, take the file with the latest parsed date and
-    run predict_full() on it. Folders without soil files are skipped. A
-    predict_full() failure on a single file logs to stderr and skips that
-    node — no crash.
+    each as one sensor (node-id = 'S' + digits from the folder name). For
+    each folder, emit one record per collection date — when a date has
+    multiple files, the latest by mtime wins. Folders without soil files
+    are skipped. A predict_full() failure on a single file logs to stderr
+    and skips that file — no crash.
     """
     out: List[Dict] = []
     root  = Path(data_root)
@@ -319,32 +319,39 @@ def load_node_data(data_root: str) -> List[Dict]:
         if not files:
             continue
 
-        latest = max(files, key=_resolved_date)
+        # One file per date per node — keep the latest by mtime when a date
+        # has multiple captures, so the per-date popup shows that day's most
+        # recent reading rather than an arbitrary earlier one.
+        latest_by_date: Dict[datetime.date, Path] = {}
+        for f in files:
+            fd = _resolved_date(f)
+            existing = latest_by_date.get(fd)
+            if existing is None or f.stat().st_mtime > existing.stat().st_mtime:
+                latest_by_date[fd] = f
 
-        try:
-            pred = predict_full(str(latest))
-        except Exception as e:
-            print(f"[node_loader] {latest}: {e}")
-            continue
+        for file_date, f in latest_by_date.items():
+            try:
+                pred = predict_full(str(f))
+            except Exception as e:
+                print(f"[node_loader] {f}: {e}")
+                continue
 
-        file_date = _parse_file_date(latest.name)
-        if file_date is None:
-            print(f"[node_loader] {latest.name}: filename date not parseable; using mtime")
-            file_date = datetime.date.fromtimestamp(latest.stat().st_mtime)
+            if _parse_file_date(f.name) is None:
+                print(f"[node_loader] {f.name}: filename date not parseable; using mtime")
 
-        file_time = _parse_file_time(latest.name)
-        if file_time is None:
-            file_time = datetime.datetime.fromtimestamp(
-                latest.stat().st_mtime
-            ).strftime("%H:%M")
-        out.append({
-            "node_id"  : node_id,
-            "date"     : file_date,
-            "time"     : file_time,
-            "is_live"  : file_date == today,
-            "filepath" : str(latest),
-            **pred,
-        })
+            file_time = _parse_file_time(f.name)
+            if file_time is None:
+                file_time = datetime.datetime.fromtimestamp(
+                    f.stat().st_mtime
+                ).strftime("%H:%M")
+            out.append({
+                "node_id"  : node_id,
+                "date"     : file_date,
+                "time"     : file_time,
+                "is_live"  : file_date == today,
+                "filepath" : str(f),
+                **pred,
+            })
 
     return out
 
