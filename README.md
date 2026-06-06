@@ -18,11 +18,11 @@ collection workflow, frequency-response plot, and serial log).
 
 ## Demo
 
-**Demo 1**
+**Map View page**
 
 <video src="https://github.com/mingqianghan/SoilSense-Monitor/raw/main/assets/demos/s1.mp4" controls width="720"></video>
 
-**Demo 2**
+**Collect Data page**
 
 <video src="https://github.com/mingqianghan/SoilSense-Monitor/raw/main/assets/demos/s2.mp4" controls width="720"></video>
 
