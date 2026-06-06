@@ -60,9 +60,6 @@ On first launch you'll be prompted for API keys (all optional — see
 .\build.bat
 ```
 
-Output: `dist\SoilSenseMonitor\SoilSenseMonitor.exe`. Zip the entire
-`dist\SoilSenseMonitor\` folder to distribute.
-
 ## ✨ Features
 
 - **Per-node soil-property estimation** — VWC, bulk EC, pore EC, and
