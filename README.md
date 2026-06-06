@@ -16,6 +16,16 @@ collection workflow, frequency-response plot, and serial log).
 > The two repositories share the same hardware/firmware foundation;
 > this one adds a redesigned PyQt6 UI, AI-assisted agronomic summaries, and real-time soil models.
 
+## Demo
+
+**Demo 1**
+
+<video src="https://github.com/mingqianghan/SoilSense-Monitor/raw/main/assets/demos/s1.mp4" controls width="720"></video>
+
+**Demo 2**
+
+<video src="https://github.com/mingqianghan/SoilSense-Monitor/raw/main/assets/demos/s2.mp4" controls width="720"></video>
+
 ## Features
 
 - **Per-node soil-property estimation** — VWC, bulk EC, pore EC, USDA
