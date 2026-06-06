@@ -18,8 +18,13 @@ collection workflow, frequency-response plot, and serial log).
 
 ## Demo
 
-- ▶ [Map View page demo](assets/demos/s1.mp4) (13 MB)
-- ▶ [Collect Data page demo](assets/demos/s2.mp4) (20 MB)
+**Map View page**
+
+![Map View page demo](assets/demos/s1.gif)
+
+**Collect Data page**
+
+![Collect Data page demo](assets/demos/s2.gif)
 
 ## Features
 

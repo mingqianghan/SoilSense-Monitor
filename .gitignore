@@ -55,5 +55,8 @@ build-tmp/
 soilsense_crash.log
 soilsense_errors.log
 
+# ── Demo source files (only the rendered GIFs are tracked) ──────────────
+assets/demos/*.mp4
+
 # ── Internal tools ──────────────────────────────────────────────────────
 .claude/
