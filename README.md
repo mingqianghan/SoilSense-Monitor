@@ -1,10 +1,26 @@
+<div align="center">
+
 # SoilSense Monitor
 
+**PyQt6 desktop app for soil-moisture sensor data collection and AI-assisted agronomic analysis**
+
+<p>
+  <a href="https://github.com/mingqianghan/SoilSense-Monitor/releases/latest"><img src="https://img.shields.io/github/v/release/mingqianghan/SoilSense-Monitor?color=2563eb&label=release" alt="Latest release"></a>
+  <img src="https://img.shields.io/badge/python-3.10%2B-blue.svg" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/platform-Windows-lightgrey.svg" alt="Platform Windows">
+  <a href="https://github.com/mingqianghan/SoilSense-Monitor/releases"><img src="https://img.shields.io/github/downloads/mingqianghan/SoilSense-Monitor/total?color=success&label=downloads" alt="Total downloads"></a>
+</p>
+
+</div>
+
+---
+
 A PyQt6 desktop application for collecting and analyzing data from
-distributed soil-moisture sensor nodes. Talks to a custom LoRa radio
-MCU over UART, plots the sensor's frequency-response curves in real
-time, and runs a calibrated permittivity model to estimate
-volumetric water content (VWC), bulk EC, and pore EC per node.
+distributed soil sensor nodes. Talks to a custom LoRa (Long Range) radio
+microcontroller (MCU) over UART serial, plots the sensor's
+frequency-response curves in real time, and runs a calibrated model to
+estimate volumetric water content (VWC), bulk **EC** (electrical
+conductivity), and pore EC per node.
 
 The app pairs an interactive **Map View** (with weather panel and AI
 agronomic summaries) with a **Collect Page** (serial port setup,
@@ -12,34 +28,54 @@ collection workflow, frequency-response plot, and serial log).
 
 > **Version note.** This is an improved, restructured version of the
 > original software. The earlier version remains available for reference at
-> [mingqianghan/SoilSensorFirmwareAndInterface](https://github.com/mingqianghan/SoilSensorFirmwareAndInterface).
+> [this repo](https://github.com/mingqianghan/SoilSensorFirmwareAndInterface).
 > The two repositories share the same hardware/firmware foundation;
 > this one adds a redesigned PyQt6 UI, AI-assisted agronomic summaries, and real-time soil models.
 
-## Demo
+## 🎬 Demo
 
 **Map View page**
 
-![Map View page demo](assets/demos/s1.gif)
+![Map View page demo](assets/demos/s2.gif)
 
 **Collect Data page**
 
-![Collect Data page demo](assets/demos/s2.gif)
+![Collect Data page demo](assets/demos/s1.gif)
 
-## Features
+## 📥 Download (Windows)
 
-- **Per-node soil-property estimation** — VWC, bulk EC, pore EC, USDA
-  salinity class, derived from a calibrated dielectric model.
+Pre-built Windows binary — no Python installation needed.
+
+1. Download **[SoilSenseMonitor-v1.0.1-win64.zip](https://github.com/mingqianghan/SoilSense-Monitor/releases/latest)** from the latest release (~394 MB).
+2. Extract anywhere (Downloads, Desktop, etc.).
+3. Run `SoilSenseMonitor\SoilSenseMonitor.exe`.
+
+On first launch you'll be prompted for API keys (all optional — see
+[API keys](#-api-keys) below). Prefer to run from source? See
+[Quick start](#-quick-start).
+
+## ✨ Features
+
+- **Per-node soil-property estimation** — VWC, bulk EC, pore EC, and
+  USDA (U.S. Department of Agriculture) salinity class, derived from a
+  calibrated model.
 - **Field map** with sensor pins, plot polygons, and weather forecast.
-  Online via Leaflet + Google satellite tiles; offline via cached tiles
-  (auto-downloaded on first online launch).
+  Online via Leaflet + Google satellite tiles.
 - **AI Crop Summary** — one-shot agronomic report from current sensor +
   weather data, via your choice of Claude / GPT / Gemini.
 - **Per-user API key storage** in the OS credential store (Windows
   Credential Manager / macOS Keychain / Linux Secret Service).
-- **Light + dark themes** with full QSS styling.
+- **Light + dark themes**.
 
-## Quick start
+## 💻 Requirements
+
+| Mode                 | Requirements                                                                    |
+| -------------------- | ------------------------------------------------------------------------------- |
+| **Pre-built `.exe`** | Windows 10 / 11 (64-bit)                                                        |
+| **From source**      | Python 3.10+, Windows / macOS / Linux                                           |
+| **Live capture**     | USB serial connection to the LoRa receiver MCU; historical-only mode needs none |
+
+## 🚀 Quick start
 
 ```bash
 # 1. Install Python dependencies
@@ -54,7 +90,7 @@ provider and OpenWeather. **All keys are optional** — skip and the app
 runs with limited functionality; configure them later via the gear
 buttons in the UI.
 
-## Configuration
+## ⚙️ Configuration
 
 `config.json` at the project root defines the field markers, plot
 polygons, and data folder paths. Edit it directly to point at your own
@@ -77,7 +113,7 @@ sensor nodes:
 }
 ```
 
-## API keys
+## 🔑 API keys
 
 The app uses two external APIs. Each end-user supplies their own key:
 
@@ -92,7 +128,26 @@ The app uses two external APIs. Each end-user supplies their own key:
 Keys are stored in your OS credential store via the `keyring` library —
 **never written to disk in plain text** and never shipped with the app.
 
-## Project layout
+## 🏗️ Architecture
+
+```mermaid
+flowchart LR
+    Sensor["🌱 LoRa sensor nodes"] -->|RF| MCU["Radio MCU"]
+    MCU -->|UART serial| Comm["comm/<br/>Serial + Weather"]
+    Comm --> Bridge["adapters/<br/>Qt bridge proxies"]
+    Bridge --> UI["ui/<br/>Collect Page"]
+    Bridge --> Home["HomeGui<br/>Map View"]
+    UI --> Soil["soil/<br/>Calibrated model<br/>(VWC, EC)"]
+    Home --> Soil
+    Home --> AIm["ai/<br/>Crop Summary"]
+    Home --> Weather["Weather panel"]
+```
+
+The `comm/` layer reuses the original Tkinter-era serial controller
+unchanged; the `adapters/` package bridges its callbacks into Qt
+signals so the rest of the UI is pure PyQt6.
+
+## 📂 Project layout
 
 ```
 CommInterface_V2/
@@ -100,10 +155,13 @@ CommInterface_V2/
 ├── AppRoot.py              # main window + theme + tooltip system
 ├── HomeGui.py              # Map View page + weather panel
 ├── styles.py               # light + dark QSS
-├── config.json
-├── result.pkl              # calibrated soil model
+├── config.json             # field markers, plots, data paths
+├── requirements.txt        # Python dependencies
+├── result.pkl              # calibrated soil model (binary)
+├── build.bat               # PyInstaller build script (Windows)
+├── SoilSense.spec          # PyInstaller spec
 │
-├── comm/                   # UART + weather API clients (protected)
+├── comm/                   # UART + weather API clients (do not edit)
 │   ├── serial_com_ctrl.py
 │   ├── data_com_ctrl.py
 │   └── weather_summary.py
@@ -137,13 +195,16 @@ CommInterface_V2/
 │
 └── assets/
     ├── app_icon.ico
-    └── leaflet/            # Leaflet JS+CSS for offline map
+    ├── map_bounds.json     # offline-map bounding box
+    ├── leaflet/            # Leaflet JS+CSS for offline map
+    └── demos/              # README demo GIFs
 ```
 
-## Development
+## 🛠️ Development
+
+Reset stored keys and clear `ai_settings.json` to retest the first-run flow:
 
 ```bash
-# Reset all stored keys and clear .env (for testing first-run flow)
 python -c "
 import keyring, pathlib
 for slot in ('openweather','anthropic','openai','gemini'):
@@ -153,3 +214,12 @@ p = pathlib.Path.home() / '.soilsense' / 'ai_settings.json'
 p.unlink(missing_ok=True)
 "
 ```
+
+### Build the Windows `.exe`
+
+```powershell
+.\build.bat
+```
+
+Output: `dist\SoilSenseMonitor\SoilSenseMonitor.exe` plus its runtime
+folder. Zip the entire `dist\SoilSenseMonitor\` folder to distribute.
