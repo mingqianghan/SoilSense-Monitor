@@ -18,13 +18,8 @@ collection workflow, frequency-response plot, and serial log).
 
 ## Demo
 
-**Map View page**
-
-<video src="https://github.com/mingqianghan/SoilSense-Monitor/raw/main/assets/demos/s1.mp4" controls width="720"></video>
-
-**Collect Data page**
-
-<video src="https://github.com/mingqianghan/SoilSense-Monitor/raw/main/assets/demos/s2.mp4" controls width="720"></video>
+- ▶ [Map View page demo](assets/demos/s1.mp4) (13 MB)
+- ▶ [Collect Data page demo](assets/demos/s2.mp4) (20 MB)
 
 ## Features
 
